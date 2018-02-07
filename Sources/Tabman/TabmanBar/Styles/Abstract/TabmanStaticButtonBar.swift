@@ -3,27 +3,11 @@
 //  Tabman
 //
 //  Created by Merrick Sapsford on 23/03/2017.
-//  Copyright © 2017 Merrick Sapsford. All rights reserved.
+//  Copyright © 2018 UI At Six. All rights reserved.
 //
 
 import UIKit
-import PureLayout
 import Pageboy
-
-
-extension UIButton {
-    func alignVertical(spacing: CGFloat = 6.0) {
-        guard let imageSize = self.imageView?.image?.size,
-            let text = self.titleLabel?.text,
-            let font = self.titleLabel?.font
-            else { return }
-        
-        self.titleEdgeInsets = UIEdgeInsets(top: 0.0, left: -imageSize.width, bottom: -(imageSize.height + spacing), right: 0.0)
-        let labelString = NSString(string: text)
-        let titleSize = labelString.size(withAttributes: [NSAttributedStringKey.font: font])
-        self.imageEdgeInsets = UIEdgeInsets(top: -(titleSize.height + spacing), left: 0.0, bottom: 0.0, right: -titleSize.width)
-    }
-}
 
 /// Abstract class for static (non-scrolling) button bars.
 internal class TabmanStaticButtonBar: TabmanButtonBar {
@@ -36,7 +20,7 @@ internal class TabmanStaticButtonBar: TabmanButtonBar {
         didSet {
             let insets = UIEdgeInsets(top: 0.0, left: interItemSpacing / 2, bottom: 0.0, right: interItemSpacing / 2)
             self.updateButtons(withContext: .all) { (button) in
-               
+
                 if self.appearance.layout.itemAlignment == .horizontal {
                     button.titleEdgeInsets = insets
                     button.imageEdgeInsets = insets
@@ -97,9 +81,9 @@ internal class TabmanStaticButtonBar: TabmanButtonBar {
     public override func add(indicator: TabmanIndicator, to contentView: UIView) {
         
         contentView.addSubview(indicator)
-        indicator.autoPinEdge(toSuperviewEdge: .bottom)
-        self.indicatorLeftMargin = indicator.autoPinEdge(toSuperviewEdge: .leading)
-        self.indicatorWidth = indicator.autoSetDimension(.width, toSize: 0.0)
+        indicator.pinToSuperviewEdge(.bottom)
+        self.indicatorLeftMargin = indicator.pinToSuperviewEdge(.leading)
+        self.indicatorWidth = indicator.set(.width, to: 0.0)
     }
     
     //
@@ -122,7 +106,7 @@ internal class TabmanStaticButtonBar: TabmanButtonBar {
             button.imageEdgeInsets = insets
             
             if let previousButton = previousButton {
-                button.autoMatch(.width, to: .width, of: previousButton)
+                button.match(.width, of: previousButton)
             }
             
             customize(button, previousButton)

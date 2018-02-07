@@ -3,7 +3,7 @@
 //  Tabman-Example
 //
 //  Created by Merrick Sapsford on 04/01/2017.
-//  Copyright © 2017 Merrick Sapsford. All rights reserved.
+//  Copyright © 2018 UI At Six. All rights reserved.
 //
 
 import UIKit
@@ -14,16 +14,14 @@ class TabViewController: TabmanViewController, PageboyViewControllerDataSource {
 
     // MARK: Outlets
     
+    @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var offsetLabel: UILabel!
     @IBOutlet weak var pageLabel: UILabel!
+    @IBOutlet weak var settingsButton: CircularButton!
     @IBOutlet weak var gradientView: GradientView!
 
     // MARK: Properties
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
     var previousBarButton: UIBarButtonItem?
     var nextBarButton: UIBarButtonItem?
     
@@ -34,8 +32,8 @@ class TabViewController: TabmanViewController, PageboyViewControllerDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         addBarButtons()
-        view.sendSubview(toBack: self.gradientView)
-                
+        setUpGradientView()
+        
         dataSource = self
         
         // bar customisation
@@ -63,10 +61,7 @@ class TabViewController: TabmanViewController, PageboyViewControllerDataSource {
         if let navigationController = segue.destination as? UINavigationController,
             let navigationBar = navigationController.navigationBar as? TransparentNavigationBar {
             let gradient = self.gradients[self.currentIndex ?? 0]
-            let color = self.interpolate(betweenColor: gradient.topColor,
-                                         and: gradient.bottomColor,
-                                         percent: 0.5)
-            navigationBar.tintColor = color
+            navigationBar.tintColor = gradient.midColor
         }
     }
     
